@@ -1,0 +1,25 @@
+spin_manifest_version = 2
+
+[application]
+name = "deletefromcart"
+version = "0.1.0"
+description = "Delete items from the shopping cart datastore"
+
+[[trigger.http]]
+route = "/..."
+component = "deletefromcart"
+
+[component.deletefromcart]
+source = "target/wasm32-wasi/release/deletefromcart.wasm"
+allowed_outbound_hosts = ["redis://unicorn-valkey-master.default.svc.cluster.local:6379"] # Add your Redis host here
+[component.deletefromcart.build]
+command = "cargo build --target wasm32-wasi --release"
+watch = ["src/**/*.rs", "Cargo.toml"]
+
+[variables]
+valkey_host = { required = true }
+valkey_password = { required = true }
+
+[component.deletefromcart.variables]
+valkey_host = "{{ valkey_host }}"
+valkey_password = "{{ valkey_password }}"

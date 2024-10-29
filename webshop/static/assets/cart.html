@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wild Rydes - Shopping Cart</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/png" href="images/unicorn-icon.png">
+    <style>
+        .cart-page {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .cart-table-container {
+            overflow-x: auto;
+        }
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+        .cart-table th, .cart-table td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #cccccc;
+        }
+        .cart-table th {
+            background-color: #2c3e50;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+            color: #ffffff;
+        }
+        .cart-table td {
+            color: #333333;
+        }
+        .cart-table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .cart-table tbody tr:hover {
+            background-color: #e9ecef;
+        }
+        .cart-summary {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 18px;
+            color: #333333;
+        }
+        .cart-summary p {
+            margin: 10px 0;
+        }
+        .cart-total {
+            font-weight: bold;
+            color: #333333;
+        }
+        .empty-cart {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #666666;
+        }
+
+        /* Add this new style for centering the delete button */
+        .cart-table td:last-child {
+            text-align: center;
+        }
+
+        /* Optional: Style the delete button */
+        .delete-button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .delete-button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="nav-button left">Wild Rydes</a>
+        <a href="cart.html" class="nav-button right">Shopping Cart</a>
+    </nav>
+
+    <main class="cart-page">
+        <h1>Shopping Cart</h1>
+        <div id="cart-container">
+            <!-- Cart content will be inserted here -->
+        </div>
+    </main>
+
+    <footer>
+        <a href="#">Investor Relations</a>
+        <a href="#">FAQ</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Contact Us</a>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchCartData();
+        });
+
+        function fetchCartData() {
+            const cartContainer = document.getElementById('cart-container');
+            cartContainer.innerHTML = '<p>Loading cart data...</p>';
+            
+            fetch('http://getcart.default.example.com')
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Received data:', data);
+                    if (data.items && Array.isArray(data.items)) {
+                        cartItems = data.items; // Store items globally
+                        if (cartItems.length === 0) {
+                            displayEmptyCart();
+                        } else {
+                            displayCartItems(cartItems);
+                            updateCartSummary(cartItems);
+                        }
+                    } else {
+                        throw new Error('Invalid data format received');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching cart data:', error);
+                    displayEmptyCart();
+                });
+        }
+
+        function displayEmptyCart() {
+            const cartContainer = document.getElementById('cart-container');
+            cartContainer.innerHTML = '<div class="empty-cart">Your cart is empty.</div>';
+        }
+
+        function displayCartItems(items) {
+            const cartContainer = document.getElementById('cart-container');
+            if (!cartContainer) {
+                console.error('Cart container not found');
+                return;
+            }
+
+            // Clear existing content
+            while (cartContainer.firstChild) {
+                cartContainer.removeChild(cartContainer.firstChild);
+            }
+
+            const tableContainer = document.createElement('div');
+            tableContainer.className = 'cart-table-container';
+            const table = document.createElement('table');
+            table.className = 'cart-table';
+
+            // Create table header
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            ['Item', 'Price', 'Quantity', 'Total', ''].forEach(headerText => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // Create table body
+            const tbody = document.createElement('tbody');
+            items.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.dataset.itemId = item.id;
+
+                const createCell = (content) => {
+                    const td = document.createElement('td');
+                    td.textContent = content;
+                    return td;
+                };
+
+                row.appendChild(createCell(item.name));
+                row.appendChild(createCell(`$${item.price.toFixed(2)}`));
+                row.appendChild(createCell(item.quantity));
+                row.appendChild(createCell(`$${(item.price * item.quantity).toFixed(2)}`));
+
+                const deleteCell = document.createElement('td');
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'delete-button';
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => deleteItem(index);
+                deleteCell.appendChild(deleteButton);
+                row.appendChild(deleteCell);
+
+                tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
+            tableContainer.appendChild(table);
+            cartContainer.appendChild(tableContainer);
+
+            // Create cart summary
+            const summary = document.createElement('div');
+            summary.className = 'cart-summary';
+            const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            const createSummaryParagraph = (label, value, id) => {
+                const p = document.createElement('p');
+                p.textContent = `${label}: `;
+                const span = document.createElement('span');
+                span.id = id;
+                span.textContent = value;
+                p.appendChild(span);
+                return p;
+            };
+
+            summary.appendChild(createSummaryParagraph('Total Items', totalItems, 'total-items'));
+            const totalPriceParagraph = createSummaryParagraph('Total Price', `$${totalPrice.toFixed(2)}`, 'total-price');
+            totalPriceParagraph.className = 'cart-total';
+            summary.appendChild(totalPriceParagraph);
+
+            cartContainer.appendChild(summary);
+        }
+
+        function updateCartSummary(items) {
+            const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            const totalItemsElement = document.getElementById('total-items');
+            const totalPriceElement = document.getElementById('total-price');
+
+            if (totalItemsElement && totalPriceElement) {
+                totalItemsElement.textContent = totalItems;
+                totalPriceElement.textContent = totalPrice.toFixed(2);
+            }
+        }
+
+        function deleteItem(index) {
+            const itemId = cartItems[index].id;
+            const requestBody = JSON.stringify({ cart_id: itemId });
+            console.log('Sending delete request with body:', requestBody);
+            fetch('http://deletefromcart.default.example.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: requestBody
+            })
+            .then(response => {
+                console.log('Delete response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Item deleted:', data);
+                fetchCartData(); // Refresh the cart after deletion
+            })
+            .catch(error => {
+                console.error('Error deleting item:', error);
+                alert('Failed to delete item. Please try again.');
+            });
+        }
+
+        function addToCart(unicornId) {
+            const requestBody = JSON.stringify({ unicorn_id: unicornId });
+            console.log('Sending add to cart request with body:', requestBody);
+            fetch('http://addtocart.default.example.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: requestBody
+            })
+            .then(response => {
+                console.log('Add to cart response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Item added to cart:', data);
+                alert('Item added to cart successfully!');
+                // Optionally update the cart display here
+            })
+            .catch(error => {
+                console.error('Error adding item to cart:', error);
+                alert('Failed to add item to cart. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>

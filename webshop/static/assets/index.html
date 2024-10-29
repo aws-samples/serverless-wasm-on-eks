@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wild Rydes - Your Magical Unicorn Shop</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/png" href="images/unicorn-icon.png">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="nav-button left">Wild Rydes</a>
+        <a href="cart.html" class="nav-button right">Shopping Cart</a>
+    </nav>
+
+    <header>
+        <img src="images/wr-home-top.jpg" alt="Wild Rydes" id="home-title-image">
+    </header>
+
+    <section class="hero" id="home">
+        <p id="tagline">Your Magical Unicorn Adventure Awaits!</p>
+        <a href="unicorns.html" class="shop-button">Shop Unicorns</a>
+    </section>
+
+    <script>
+        // JavaScript code
+        const taglines = [
+            "Your Magical Unicorn Adventure Awaits!",
+            "Ride in Style with Wild Rydes!",
+            "Unleash Your Inner Unicorn!",
+            "Experience the Magic of Wild Rydes!"
+        ];
+
+        let currentTagline = 0;
+        const taglineElement = document.getElementById('tagline');
+
+        function rotateTagline() {
+            currentTagline = (currentTagline + 1) % taglines.length;
+            taglineElement.textContent = taglines[currentTagline];
+        }
+
+        setInterval(rotateTagline, 3000);
+    </script>
+
+    <footer>
+        <a href="#">Investor Relations</a>
+        <a href="#">FAQ</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Contact Us</button>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,83 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: webshop
+spec:
+  template:
+    spec:
+      runtimeClassName: spin
+      containers:
+      - image: $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/webshop:demo
+        name: webshop
+        command: ["/"]
+        ports:
+        - containerPort: 80
+---
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: addtocart
+spec:
+  template:
+    spec:
+      runtimeClassName: spin
+      containers:
+      - image: $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/addtocart:demo
+        name: addtocart
+        command: ["/"]
+        ports:
+        - containerPort: 80
+        env:
+        - name: SPIN_VARIABLE_VALKEY_HOST
+          value: "unicorn-valkey-master.default.svc.cluster.local:6379"
+        - name: SPIN_VARIABLE_VALKEY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: unicorn-valkey
+              key: valkey-password
+---
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: deletefromcart
+spec:
+  template:
+    spec:
+      runtimeClassName: spin
+      containers:
+      - image: $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/deletefromcart:demo
+        name: deletefromcart
+        command: ["/"]
+        ports:
+        - containerPort: 80
+        env:
+        - name: SPIN_VARIABLE_VALKEY_HOST
+          value: "unicorn-valkey-master.default.svc.cluster.local:6379"
+        - name: SPIN_VARIABLE_VALKEY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: unicorn-valkey
+              key: valkey-password
+---
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: getcart
+spec:
+  template:
+    spec:
+      runtimeClassName: spin
+      containers:
+      - image: $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/getcart:demo
+        name: getcart
+        command: ["/"]
+        ports:
+        - containerPort: 80
+        env:
+        - name: SPIN_VARIABLE_VALKEY_HOST
+          value: "unicorn-valkey-master.default.svc.cluster.local:6379"
+        - name: SPIN_VARIABLE_VALKEY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: unicorn-valkey
+              key: valkey-password

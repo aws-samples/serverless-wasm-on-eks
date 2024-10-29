@@ -1,0 +1,20 @@
+# Build outputs
+target/
+
+# Rust specific
+Cargo.lock
+**/*.rs.bk
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.terraform*
+crash.log
+*.tfvars
+
+# Packer
+packer_cache/
+
+# Spin
+**/*.spin/

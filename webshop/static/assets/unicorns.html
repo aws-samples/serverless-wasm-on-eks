@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wild Rydes - Shop Unicorns</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/png" href="images/unicorn-icon.png">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="nav-button left">Wild Rydes</a>
+        <a href="cart.html" class="nav-button right">Shopping Cart</a>
+    </nav>
+
+    <main class="unicorn-shop">
+        <h1>Shop Unicorns</h1>
+        <div class="unicorn-container">
+            <div class="unicorn-box">
+                <img src="images/bucephalus.png" alt="Bucephalus">
+                <div class="unicorn-info">
+                    <h2>Bucephalus</h2>
+                    <p>A majestic unicorn with a golden mane and a horn that sparkles in the sunlight.</p>
+                    <p class="price">$5,000</p>
+                    <div class="purchase-options">
+                        <input type="number" min="1" value="1" class="quantity-input">
+                        <button class="add-to-cart" data-name="Bucephalus" data-price="5000">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="unicorn-box">
+                <img src="images/rocinante.png" alt="Rocinante">
+                <div class="unicorn-info">
+                    <h2>Rocinante</h2>
+                    <p>A swift and agile unicorn, perfect for adventurers seeking thrilling rides.</p>
+                    <p class="price">$4,500</p>
+                    <div class="purchase-options">
+                        <input type="number" min="1" value="1" class="quantity-input">
+                        <button class="add-to-cart" data-name="Rocinante" data-price="4500">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="unicorn-box">
+                <img src="images/shadowfox.png" alt="Shadowfox">
+                <div class="unicorn-info">
+                    <h2>Shadowfox</h2>
+                    <p>A mysterious unicorn with a sleek black coat and the ability to blend into shadows.</p>
+                    <p class="price">$5,500</p>
+                    <div class="purchase-options">
+                        <input type="number" min="1" value="1" class="quantity-input">
+                        <button class="add-to-cart" data-name="Shadowfox" data-price="5500">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <a href="#">Investor Relations</a>
+        <a href="#">FAQ</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Contact Us</a>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const name = this.getAttribute('data-name');
+                    const price = parseFloat(this.getAttribute('data-price')); // Already correct
+                    const quantity = parseInt(this.parentElement.querySelector('.quantity-input').value, 10); // Already correct
+                    
+                    addToCart(name, price, quantity);
+                });
+            });
+        });
+
+        function addToCart(name, price, quantity) {
+            fetch('http://addtocart.default.example.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    price: price,
+                    quantity: quantity
+                }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                // Alert removed, item added silently
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // Alert removed, errors will only be logged to console
+            });
+        }
+    </script>
+</body>
+</html>

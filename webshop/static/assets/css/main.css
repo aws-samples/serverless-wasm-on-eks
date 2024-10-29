@@ -1,0 +1,166 @@
+body {
+    padding-top: 50px; /* Add some padding to prevent content from being hidden behind the navbar */
+    background-color: #F40B53;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.hero {
+    text-align: center;
+    padding: 100px 0 50px;
+}
+
+.hero img {
+    max-width: 100%;
+    height: auto;
+    margin: 20px 0;
+}
+
+.shop-button {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+footer {
+    background-color: #F40B53;
+    color: #ffffff;
+    padding: 20px 0;
+    text-align: center;
+    width: 100%;
+}
+
+footer a, footer button {
+    color: #ffffff;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+/* Add these new styles for the navbar */
+.navbar {
+    background-color: #d0d0d0; /* Darker gray background */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-button {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+
+.nav-button.left {
+    margin-right: auto;
+}
+
+.nav-button.right {
+    margin-left: auto;
+}
+
+/* Unicorn Shop Styles */
+.unicorn-shop {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.unicorn-shop h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.unicorn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.unicorn-box {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.unicorn-box img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.unicorn-info {
+    flex: 1;
+}
+
+.unicorn-info h2 {
+    margin-top: 0;
+}
+
+.unicorn-info .price {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #FFD700; /* Gold color for the price */
+    margin: 10px 0;
+}
+
+.purchase-options {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.quantity-input {
+    width: 50px;
+    padding: 5px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.add-to-cart {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.add-to-cart:hover {
+    background-color: #45a049;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .unicorn-box {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .unicorn-box img {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .purchase-options {
+        justify-content: center;
+    }
+}
