@@ -46,6 +46,7 @@ build-knative:
 	kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.15.2/serving-crds.yaml && \
 	kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.15.2/serving-core.yaml && \
 	kubectl apply -f istio.yaml && \
+	sleep 10 && \
 	kubectl apply -f https://github.com/knative/net-istio/releases/download/knative-v1.15.1/net-istio.yaml && \
 	kubectl patch configmap/config-features \
       --namespace knative-serving \
