@@ -3,7 +3,6 @@ spin_manifest_version = 2
 [application]
 name = "static-fileserver"
 version = "0.1.0"
-authors = ["Alex Koenig <kngalx@amazon.de>"]
 description = "Wild Rydes webshop"
 
 [[trigger.http]]

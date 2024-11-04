@@ -11,7 +11,7 @@ component = "getcart"
 
 [component.getcart]
 source = "target/wasm32-wasi/release/get_cart.wasm"
-allowed_outbound_hosts = ["redis://unicorn-valkey-master.default.svc.cluster.local:6379"] # Add your Redis host here
+allowed_outbound_hosts = ["redis://unicorn-valkey-primary.default.svc.cluster.local:6379"] # Add your Redis host here
 [component.getcart.build]
 command = "cargo build --target wasm32-wasi --release"
 watch = ["src/**/*.rs", "Cargo.toml"]

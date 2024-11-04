@@ -1,6 +1,6 @@
 architecture: standalone
 auth:
   enabled: true
-master:
+primary:
   persistence:
     enabled: false

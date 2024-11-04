@@ -29,7 +29,7 @@ spec:
         - containerPort: 80
         env:
         - name: SPIN_VARIABLE_VALKEY_HOST
-          value: "unicorn-valkey-master.default.svc.cluster.local:6379"
+          value: "unicorn-valkey-primary.default.svc.cluster.local:6379"
         - name: SPIN_VARIABLE_VALKEY_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -52,7 +52,7 @@ spec:
         - containerPort: 80
         env:
         - name: SPIN_VARIABLE_VALKEY_HOST
-          value: "unicorn-valkey-master.default.svc.cluster.local:6379"
+          value: "unicorn-valkey-primary.default.svc.cluster.local:6379"
         - name: SPIN_VARIABLE_VALKEY_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -75,7 +75,7 @@ spec:
         - containerPort: 80
         env:
         - name: SPIN_VARIABLE_VALKEY_HOST
-          value: "unicorn-valkey-master.default.svc.cluster.local:6379"
+          value: "unicorn-valkey-primary.default.svc.cluster.local:6379"
         - name: SPIN_VARIABLE_VALKEY_PASSWORD
           valueFrom:
             secretKeyRef:
