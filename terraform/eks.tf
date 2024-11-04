@@ -124,6 +124,11 @@ module "vpc" {
   tags = local.tags
 }
 
+resource "time_sleep" "wait_60_seconds" {
+  depends_on = [module.eks]
+  create_duration = "60s"
+}
+
 module "load_balancer_controller_irsa_role" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-role-for-service-accounts-eks?ref=15fd17540b6db8be434759e684c1cabf20a5219a"
 
@@ -142,7 +147,7 @@ module "load_balancer_controller_irsa_role" {
 
 resource "helm_release" "aws_load_balancer_controller" {
   name       = "aws-load-balancer-controller"
-  depends_on = [module.eks]
+  depends_on = [module.load_balancer_controller_irsa_role]
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
   namespace  = "kube-system"
